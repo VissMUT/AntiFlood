@@ -6,9 +6,11 @@ Minecraft plugin prohibiting players from writing to chat too quickly, which hel
 
 <h3>Commands:</h3>
 
-/aflood - show help
-/aflood reload - reboot plugin configuration
-/aflood version - show plugin version
+<ul>
+    <li>/aflood - show help</li>
+    <li>/aflood reload - reboot plugin configuration</li>
+    <li>/aflood version - show plugin version</li>
+</ul>
 
 <h3>Requirements:</h3>
 
