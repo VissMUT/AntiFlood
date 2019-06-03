@@ -1,0 +1,7 @@
+name: AntiFlood
+author: VisMUT
+main: ru.mcnova.AntiFlood.main
+version: 1.0
+commands:
+  aflood:
+    description: Информация.

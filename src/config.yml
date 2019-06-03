@@ -1,0 +1,10 @@
+# name: AntiFlood
+# version: 1.0
+# author: VisMUT
+# Mc-Nova 03.06.2019
+Configuration:
+  # Интервал между сообщениями игрока (с)
+  time: 3
+  prefix: '&c[&6MC-Nova&c]&6:'
+  message: 'Вы пишите в чат слишком часто!'
+  no_permission: 'Недостаточно прав.'
