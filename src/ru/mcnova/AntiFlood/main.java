@@ -10,14 +10,17 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import static jdk.nashorn.internal.objects.NativeString.toLowerCase;
 
 public class main extends JavaPlugin implements Listener {
 
-    Set<String> antiflood = new HashSet();
+    ArrayList<String> antiflood_list = new ArrayList<String>();
+
+    boolean compatibility_enable;
+
+    ArrayList<String> compatibility_channel = new ArrayList<String>();
 
     long time;
 
@@ -34,6 +37,19 @@ public class main extends JavaPlugin implements Listener {
             getLogger().info("Создание config.yml...");
             getConfig().options().copyDefaults(true);
             saveDefaultConfig();
+
+            String[] config_channels = getConfig().getString("UltimateChat_Compatibility.channels").split(";");
+            for(int i = 0; i < config_channels.length; i++){
+                compatibility_channel.add(config_channels[i]);
+            }
+            compatibility_enable = getConfig().getBoolean("UltimateChat_Compatibility.enable");
+        }
+        else{
+            String[] config_channels = getConfig().getString("UltimateChat_Compatibility.channels").split(";");
+            for(int i = 0; i < config_channels.length; i++){
+                compatibility_channel.add(config_channels[i]);
+            }
+            compatibility_enable = getConfig().getBoolean("UltimateChat_Compatibility.enable");
         }
     }
 
@@ -44,7 +60,14 @@ public class main extends JavaPlugin implements Listener {
             switch (argument){
                 case "reload":
                     Permission reload_permission = new Permission("aflood.reload");
-                    if(player.hasPermission(reload_permission)) reloadConfig();
+                    if(player.hasPermission(reload_permission)){
+                        reloadConfig();
+                        String[] config_channels = getConfig().getString("UltimateChat_Compatibility.channels").split(";");
+                        for(int i = 0; i < config_channels.length; i++){
+                            compatibility_channel.add(config_channels[i]);
+                        }
+                        compatibility_enable = getConfig().getBoolean("UltimateChat_Compatibility.enable");
+                    }
                     else{player.sendMessage(tools.plugin_message(getConfig().getString("Configuration.prefix"), getConfig().getString("Configuration.no_permission")));}
                     break;
                 case "version":
@@ -68,19 +91,20 @@ public class main extends JavaPlugin implements Listener {
         final Player player = e.getPlayer();
         this.time = getConfig().getLong("Configuration.time");
         this.time *= 20L;
-        boolean spamhas = this.antiflood.contains(player.getName());
+        boolean check_player = this.antiflood_list.contains(player.getName());
         if (!player.hasPermission("aflood.bypass"))
-            if (!spamhas) {
-                this.antiflood.add(player.getName());
-                getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-                    public void run() {
-                        main.this.antiflood.remove(player.getName());
-                    }
-                },  this.time);
+            if (!check_player) {
+                if(compatibility_enable && !compatibility_channel.contains(Character.toString(e.getMessage().charAt(0)))){
+                    this.antiflood_list.add(player.getName());
+                    getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+                        public void run() {
+                            main.this.antiflood_list.remove(player.getName());
+                        }
+                    },  this.time);
+                }
             } else {
                 e.setCancelled(true);
                 player.sendMessage(tools.plugin_message(getConfig().getString("Configuration.prefix"), getConfig().getString("Configuration.message")));
             }
     }
-
 }

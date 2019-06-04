@@ -2,7 +2,7 @@
 
 <h3>Description:</h3>
 
-Minecraft plugin prohibiting players from writing to chat too quickly, which helps to prevent it from clogging.
+Minecraft plugin prohibiting players from writing to chat too quickly, which helps to prevent it from clogging. The plugin has compatibility with UltimateChat.
 
 <h3>Commands:</h3>
 
