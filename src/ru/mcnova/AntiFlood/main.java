@@ -24,7 +24,7 @@ public class main extends JavaPlugin implements Listener {
 
     long time;
 
-    String version = "AntiFlood v. 1.0";
+    String version = "AntiFlood v. 1.1";
 
     String help = version + "\n" + "Доступные команды:\n" + "/aflood reload - перезагрузка конфигурации\n" + "/aflood version - версия плагина";
 
